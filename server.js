@@ -114,6 +114,24 @@ app.get('/api/admin/papers', authMiddleware, adminOnly, (req, res) => {
   res.json(out);
 });
 
+// --- Add subject via frontend (auth required) ---
+// Expects JSON: { grp, year, semester, subject }
+app.post('/api/subjects/add', authMiddleware, (req, res) => {
+  const { grp, year, semester, subject } = req.body || {};
+  if (!grp || !year || !subject) return res.status(400).json({ ok: false, message: 'grp, year and subject required' });
+
+  try {
+    // insertSubject returns the inserted subject object
+    const s = db.insertSubject({ grp, year, semester: semester || 'NA', subject });
+    // return fresh list so frontend can update immediately
+    const all = db.listSubjects();
+    return res.json({ ok: true, subject: s, subjects: all });
+  } catch (e) {
+    console.error('add-subject-error', e && e.message);
+    return res.status(500).json({ ok: false, message: 'Server error' });
+  }
+});
+
 app.post('/api/admin/approve/:id', authMiddleware, adminOnly, (req, res) => {
   const id = req.params.id;
   const ok = db.approvePaper(id);

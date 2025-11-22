@@ -207,6 +207,51 @@ async function loadMost() {
   });
 }
 
+async function addSubject() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Login required");
+    return;
+  }
+
+  const grp = document.getElementById("grp").value;
+  const year = document.getElementById("year").value;
+  const semester = document.getElementById("semester").value;
+  const subject = document.getElementById("newSubject").value.trim();
+
+  if (!subject) {
+    alert("Enter subject name");
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/subjects/add", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+      },
+      body: JSON.stringify({ grp, year, semester, subject })
+    });
+    const data = await res.json();
+
+    if (!data.ok) {
+      alert(data.message || "Failed");
+      return;
+    }
+
+    // update dropdowns with fresh list
+    allSubjects = data.subjects;
+    loadDropdowns();
+    document.getElementById("newSubject").value = "";
+
+    alert("Subject added!");
+  } catch (e) {
+    console.error(e);
+    alert("Error adding subject");
+  }
+}
+
 function populateFilterDropdowns() {
   const groups = Array.from(new Set(subjects.map(s => s.grp))).filter(Boolean);
   const fgrp = document.getElementById('fgrp');

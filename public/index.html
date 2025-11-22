@@ -38,8 +38,11 @@
     <select id="grp"></select>
     <select id="year"></select>
     <select id="semester"></select>
-    <select id="subject"></select>
-
+<div style="display:flex;gap:8px;align-items:center;">
+  <select id="subject" style="flex:1"></select>
+  <input id="newSubject" placeholder="Add subject (name)" style="width:180px;padding:8px;border-radius:8px;" />
+  <button onclick="addSubject()" class="btn">Add</button>
+</div>
     <input id="files" type="file" multiple>
 
     <button onclick="createPaper()" class="btn primary">Submit</button>
