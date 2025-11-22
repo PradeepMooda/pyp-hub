@@ -121,6 +121,18 @@ app.post('/api/subjects/add', authMiddleware, (req, res) => {
   if (!grp || !year || !subject) return res.status(400).json({ ok: false, message: 'grp, year and subject required' });
 
   try {
+    // normalize and check for duplicates (case-insensitive)
+    const norm = (s)=>String(s||'').trim().toLowerCase();
+    const existing = db.listSubjects().find(s =>
+      norm(s.grp) === norm(grp) &&
+      norm(s.year) === norm(year) &&
+      norm(s.semester || 'NA') === norm(semester || 'NA') &&
+      norm(s.subject) === norm(subject)
+    );
+    if (existing) {
+      return res.json({ ok: false, message: 'Subject already exists' });
+    }
+
     // insertSubject returns the inserted subject object
     const s = db.insertSubject({ grp, year, semester: semester || 'NA', subject });
     // return fresh list so frontend can update immediately
@@ -211,3 +223,18 @@ app.get('/api/most-downloaded', (req, res) => {
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, function() { console.log("Server running at http://127.0.0.1:" + PORT); });
+
+// --- Admin: delete a subject by id (admin only) ---
+app.post('/api/admin/subject/delete/:id', authMiddleware, adminOnly, (req, res) => {
+  const id = req.params.id;
+  // simple delete by filtering in db.deleteSubject (we don't have it — do manual)
+  try {
+    const dbRaw = require('./db');
+    // remove subject
+    const subjects = (function(){ const fs=require('fs'); const p=require('path').join(__dirname,'data','db.json'); let j=JSON.parse(fs.readFileSync(p,'utf8')||'{}'); j.subjects = (j.subjects||[]).filter(s=>s.id !== id); fs.writeFileSync(p, JSON.stringify(j,null,2)); return j.subjects; })();
+    return res.json({ ok: true, message: 'Subject deleted', subjects });
+  } catch (e) {
+    console.error('admin-delete-subject', e && e.message);
+    return res.status(500).json({ ok: false, message: 'Server error' });
+  }
+});
