@@ -1,0 +1,105 @@
+/* Fancy Modern — Student PQP Hub */
+
+:root{
+  --bg:#0f1724;
+  --card:#0b1220;
+  --muted:#9aa7bd;
+  --accent:#6ee7b7;
+  --accent2:#60a5fa;
+  --text:#e6eef8;
+  --glass: rgba(255,255,255,0.03);
+  --shadow: 0 6px 20px rgba(2,6,23,0.6);
+  --radius:14px;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg,#071023 0%, #071833 60%);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding:18px;
+}
+
+.container{
+  max-width:920px;
+  margin:0 auto;
+}
+
+.title{
+  text-align:center;
+  margin:6px 0 18px 0;
+  font-size:22px;
+  letter-spacing:0.4px;
+}
+
+/* card */
+.card{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius: var(--radius);
+  padding:14px;
+  margin:12px 0;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* inputs */
+input, select {
+  width:100%;
+  padding:10px 12px;
+  margin:8px 0;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background:var(--glass);
+  color:var(--text);
+  outline:none;
+}
+
+/* buttons */
+.btn{
+  display:inline-block;
+  padding:10px 14px;
+  border-radius:10px;
+  background:transparent;
+  color:var(--accent2);
+  border:1px solid rgba(96,165,250,0.18);
+  cursor:pointer;
+  margin:6px 6px 0 0;
+  font-weight:600;
+}
+.btn.primary{
+  background: linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#042028;
+  border:none;
+  box-shadow: 0 6px 18px rgba(96,165,250,0.08);
+}
+
+/* small helpers */
+.hidden{display:none}
+.user-block{ text-align:right; color:var(--muted); font-size:14px; margin-bottom:8px; }
+#most{display:flex;gap:8px;flex-wrap:wrap}
+#most .chip{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,0.02)}
+
+/* results */
+#results .paper{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+.paper .meta{flex:1}
+.paper .actions{min-width:120px;text-align:right}
+
+/* responsive */
+@media(min-width:880px){
+  .card{display:flex;gap:18px;align-items:flex-start}
+  #authSection, #uploadSection{flex:1}
+  #browseSection{flex:2}
+  input,select{max-width:340px}
+}

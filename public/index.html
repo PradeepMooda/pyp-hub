@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PYP — Previous Year Papers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#60a5fa">
+</head>
+<body>
+
+<div class="container">
+
+  <h1 class="title">📚 PYP — Previous Year Papers</h1>
+
+  <!-- USER BLOCK -->
+  <div id="userBlock" class="user-block"></div>
+
+  <!-- AUTH SECTION -->
+  <div id="authSection" class="card">
+    <h2>Login / Register</h2>
+
+    <input id="name" placeholder="Full Name (for register)">
+    <input id="email" placeholder="Email">
+    <input id="password" placeholder="Password" type="password">
+
+    <button onclick="register()" class="btn primary">Register</button>
+    <button onclick="login()" class="btn">Login</button>
+  </div>
+
+  <!-- UPLOAD SECTION -->
+  <div id="uploadSection" class="card hidden">
+    <h2>Upload Question Paper</h2>
+
+    <input id="title" placeholder="Paper Title">
+
+    <select id="grp"></select>
+    <select id="year"></select>
+    <select id="semester"></select>
+    <select id="subject"></select>
+
+    <input id="files" type="file" multiple>
+
+    <button onclick="createPaper()" class="btn primary">Submit</button>
+  </div>
+
+  <!-- BROWSE SECTION -->
+  <div id="browseSection" class="card">
+    <h2>Browse Papers</h2>
+
+    <select id="fgrp"></select>
+    <select id="fyear"></select>
+    <select id="fsemester"></select>
+    <select id="fsubject"></select>
+
+    <button onclick="filterPapers()" class="btn primary">Search</button>
+
+    <h3>🔥 Most Downloaded</h3>
+    <div id="most"></div>
+
+    <h3>Results</h3>
+    <div id="results"></div>
+  </div>
+
+</div>
+
+<script src="/app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('SW registered'))
+    .catch(e => console.log('SW failed', e));
+}
+</script>
+</body>
+</html>
